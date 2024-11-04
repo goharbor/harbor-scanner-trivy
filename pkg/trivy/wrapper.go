@@ -203,6 +203,14 @@ func (w *wrapper) prepareScanCmd(target ScanTarget, outputFile string, opt ScanO
 		args = append(args, "--ignore-policy", w.config.IgnorePolicy)
 	}
 
+	if w.config.DBRepository != "" {
+		args = append(args, "--db-repository", w.config.DBRepository)
+	}
+
+	if w.config.JavaDBRepository != "" {
+		args = append(args, "--java-db-repository", w.config.JavaDBRepository)
+	}
+
 	if w.config.DebugMode {
 		args = append(args, "--debug")
 	}
