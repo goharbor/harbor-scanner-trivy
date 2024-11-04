@@ -3,8 +3,8 @@ fullnameOverride: ""
 
 image:
   registry: docker.io
-  repository: aquasec/harbor-scanner-trivy
-  tag: 0.31.4
+  repository: goharbor/harbor-scanner-trivy
+  tag: 0.32.0
   pullPolicy: IfNotPresent
 
 replicaCount: 1
@@ -102,7 +102,7 @@ scanner:
     gitHubToken: ""
     ## insecure the flag to skip verifying registry certificate
     insecure: false
-    # See https://github.com/aquasecurity/trivy#filter-the-vulnerabilities-by-open-policy-agent-policy for details
+    # See https://github.com/goharbor/trivy#filter-the-vulnerabilities-by-open-policy-agent-policy for details
     ignorePolicy: ""
     # ignorePolicy:  |
     #  package trivy

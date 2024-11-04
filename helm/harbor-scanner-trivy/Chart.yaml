@@ -1,11 +1,11 @@
 apiVersion: v1
 name: harbor-scanner-trivy
-version: 0.31.4
-appVersion: 0.31.4
+version: 0.32.0
+appVersion: 0.32.0
 description: Harbor scanner adapter for Trivy
 keywords:
   - scanner
   - harbor
   - vulnerability
 sources:
-- https://github.com/aquasecurity/harbor-scanner-trivy
+- https://github.com/goharbor/harbor-scanner-trivy

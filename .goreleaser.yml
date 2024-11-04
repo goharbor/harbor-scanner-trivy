@@ -29,16 +29,15 @@ changelog:
       - '^release'
 dockers:
   - image_templates:
-      - "docker.io/aquasec/harbor-scanner-trivy:{{ .Version }}"
-      - "public.ecr.aws/aquasecurity/harbor-scanner-trivy:{{ .Version }}"
+      - "docker.io/goharbor/harbor-scanner-trivy:{{ .Version }}"
     ids:
       - scanner-trivy
     build_flag_templates:
       - "--label=org.label-schema.schema-version=1.0"
       - "--label=org.label-schema.name={{ .ProjectName }}"
       - "--label=org.label-schema.description=Harbor scanner adapter for Trivy"
-      - "--label=org.label-schema.vendor=Aqua Security"
+      - "--label=org.label-schema.vendor=Harbor community"
       - "--label=org.label-schema.version={{ .Version }}"
       - "--label=org.label-schema.build-date={{ .Date }}"
-      - "--label=org.label-schema.vcs=https://github.com/aquasecurity/harbor-scanner-trivy"
+      - "--label=org.label-schema.vcs=https://github.com/goharbor/harbor-scanner-trivy"
       - "--label=org.label-schema.vcs-ref={{ .FullCommit }}"
