@@ -78,9 +78,9 @@ spec:
             - name: "SCANNER_TRIVY_OFFLINE_SCAN"
               value: {{ .Values.scanner.trivy.offlineScan | quote }}
             - name: "SCANNER_TRIVY_DB_REPOSITORY"
-              value: {{ .Values.scanner.trivy.dbRepository | quote }}
+              value: {{ .Values.scanner.trivy.dbRepository | join \",\" | quote }}
             - name: "SCANNER_TRIVY_JAVA_DB_REPOSITORY"
-              value: {{ .Values.scanner.trivy.javaDBRepository | quote }}
+              value: {{ .Values.scanner.trivy.javaDBRepository | join \",\" | quote }}
             - name: "SCANNER_TRIVY_GITHUB_TOKEN"
               valueFrom:
                 secretKeyRef:
