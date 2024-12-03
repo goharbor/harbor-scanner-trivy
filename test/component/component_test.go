@@ -26,7 +26,7 @@ var (
 	trivyScanner = harbor.Scanner{
 		Name:    "Trivy",
 		Vendor:  "Aqua Security",
-		Version: "0.56.1",
+		Version: "0.57.1",
 	}
 )
 
