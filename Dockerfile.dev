@@ -1,5 +1,5 @@
 # That's the only place where you're supposed to specify version of Trivy.
-ARG TRIVY_VERSION=0.56.1
+ARG TRIVY_VERSION=0.57.1
 ARG SKAFFOLD_GO_GCFLAGS
 
 FROM golang:1.22 AS builder
