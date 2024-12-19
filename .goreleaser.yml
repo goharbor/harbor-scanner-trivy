@@ -27,7 +27,7 @@ changelog:
       - '^release'
 dockers:
   - image_templates:
-      - "docker.io/goharbor/harbor-scanner-trivy:{{ .Tag }}"
+      - "docker.io/goharbor/harbor-scanner-trivy:{{ .Version }}"
     ids:
       - scanner-trivy
     build_flag_templates:
