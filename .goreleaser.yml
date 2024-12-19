@@ -18,8 +18,6 @@ archives:
       amd64: x86_64
 checksum:
   name_template: 'checksums.txt'
-snapshot:
-  name_template: "{{ .FullCommit }}"
 changelog:
   sort: asc
   filters:
@@ -29,7 +27,7 @@ changelog:
       - '^release'
 dockers:
   - image_templates:
-      - "docker.io/goharbor/harbor-scanner-trivy:{{ .Version }}"
+      - "docker.io/goharbor/harbor-scanner-trivy:{{ .Tag }}"
     ids:
       - scanner-trivy
     build_flag_templates:
