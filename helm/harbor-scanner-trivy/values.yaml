@@ -4,7 +4,7 @@ fullnameOverride: ""
 image:
   registry: docker.io
   repository: goharbor/harbor-scanner-trivy
-  tag: 0.32.2
+  tag: v0.32.3
   pullPolicy: IfNotPresent
 
 replicaCount: 1
