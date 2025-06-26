@@ -146,6 +146,7 @@ func TestRestAPI(t *testing.T) {
 						Pkg:         "musl",
 						Version:     "1.1.22-r4",
 						FixVersion:  "1.1.22-r5",
+						Status:      "fixed",
 						Severity:    harbor.SevMedium,
 						Description: "In musl libc through 1.2.1, wcsnrtombs mishandles particular combinations of destination buffer size and source character limit, as demonstrated by an invalid write access (buffer overflow).",
 						Links: []string{
@@ -161,6 +162,7 @@ func TestRestAPI(t *testing.T) {
 						Pkg:         "musl-utils",
 						Version:     "1.1.22-r4",
 						FixVersion:  "1.1.22-r5",
+						Status:      "fixed",
 						Severity:    harbor.SevMedium,
 						Description: "In musl libc through 1.2.1, wcsnrtombs mishandles particular combinations of destination buffer size and source character limit, as demonstrated by an invalid write access (buffer overflow).",
 						Links: []string{
@@ -335,6 +337,7 @@ func TestRestAPI(t *testing.T) {
 						Pkg:         "libssl1.1",
 						Version:     "1.1.1c-r0",
 						FixVersion:  "1.1.1d-r0",
+						Status:      "fixed",
 						Severity:    harbor.SevMedium,
 						Description: "OpenSSL 1.1.1 introduced a rewritten random number generator (RNG). This was intended to include protection in the event of a fork() system call in order to ensure that the parent and child processes did not share the same RNG state. However this protection was not being used in the default case. A partial mitigation for this issue is that the output from a high precision timer is mixed into the RNG state so the likelihood of a parent and child process sharing state is significantly reduced. If an application already calls OPENSSL_init_crypto() explicitly using OPENSSL_INIT_ATFORK then this problem does not occur at all. Fixed in OpenSSL 1.1.1d (Affected 1.1.1-1.1.1c).",
 						Links: []string{
