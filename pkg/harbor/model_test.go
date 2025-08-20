@@ -123,6 +123,7 @@ func TestSeverity_MarshalJSON(t *testing.T) {
 		},
 		{
 			severityLevel: 666,
+			expectedSeverity: SevUnknown,
 		},
 	}
 
