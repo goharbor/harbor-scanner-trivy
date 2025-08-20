@@ -46,8 +46,12 @@ var stringToSeverity = map[string]Severity{
 
 // MarshalJSON marshals the Severity enum value as a quoted JSON string.
 func (s Severity) MarshalJSON() ([]byte, error) {
+	str, ok := severityToString[s]
+	if !ok {
+		str = "Unknown" // fallback for unknown values
+	}
 	buffer := bytes.NewBufferString(`"`)
-	buffer.WriteString(severityToString[s])
+	buffer.WriteString(str)
 	buffer.WriteString(`"`)
 	return buffer.Bytes(), nil
 }
@@ -55,11 +59,14 @@ func (s Severity) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON unmarshals quoted JSON string to the Severity enum value.
 func (s *Severity) UnmarshalJSON(b []byte) error {
 	var value string
-	err := json.Unmarshal(b, &value)
-	if err != nil {
+	if err := json.Unmarshal(b, &value); err != nil {
 		return err
 	}
-	*s = stringToSeverity[value]
+	if sev, ok := stringToSeverity[value]; ok {
+		*s = sev
+	} else {
+		*s = SevUnknown // fallback for unknown strings
+	}
 	return nil
 }
 
