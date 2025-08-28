@@ -39,6 +39,7 @@ type Trivy struct {
 	OfflineScan      bool          `env:"SCANNER_TRIVY_OFFLINE_SCAN" envDefault:"false"`
 	GitHubToken      string        `env:"SCANNER_TRIVY_GITHUB_TOKEN"`
 	Insecure         bool          `env:"SCANNER_TRIVY_INSECURE" envDefault:"false"`
+	VEXSource        string        `env:"SCANNER_TRIVY_VEX_SOURCE"`
 	Timeout          time.Duration `env:"SCANNER_TRIVY_TIMEOUT" envDefault:"5m0s"`
 }
 

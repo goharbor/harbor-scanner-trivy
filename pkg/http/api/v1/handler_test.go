@@ -719,6 +719,7 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 					Scanners:         "vuln",
 					Severity:         "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
 					Timeout:          5 * time.Minute,
+					VEXSource:	  "oci",
 				},
 			},
 			expectedHTTPCode: http.StatusOK,
@@ -773,7 +774,8 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 	"env.SCANNER_TRIVY_VULN_TYPE": "os,library",
 	"env.SCANNER_TRIVY_SECURITY_CHECKS": "vuln",
 	"env.SCANNER_TRIVY_SEVERITY": "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
-	"env.SCANNER_TRIVY_TIMEOUT": "5m0s"
+	"env.SCANNER_TRIVY_TIMEOUT": "5m0s",
+	"env.SCANNER_TRIVY_VEX_SOURCE": "oci"
 }
 }`,
 		},
@@ -798,6 +800,7 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 					Scanners:         "vuln",
 					Severity:         "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
 					Timeout:          5 * time.Minute,
+					VEXSource:        "repo",
 				},
 			},
 			expectedHTTPCode: http.StatusOK,
@@ -850,7 +853,8 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 	"env.SCANNER_TRIVY_VULN_TYPE": "os,library",
 	"env.SCANNER_TRIVY_SECURITY_CHECKS": "vuln",
 	"env.SCANNER_TRIVY_SEVERITY": "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
-	"env.SCANNER_TRIVY_TIMEOUT": "5m0s"
+	"env.SCANNER_TRIVY_TIMEOUT": "5m0s",
+	"env.SCANNER_TRIVY_VEX_SOURCE": "repo"
 }
 }`,
 		},
@@ -921,7 +925,8 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 	"env.SCANNER_TRIVY_VULN_TYPE": "os,library",
 	"env.SCANNER_TRIVY_SECURITY_CHECKS": "vuln",
 	"env.SCANNER_TRIVY_SEVERITY": "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
-	"env.SCANNER_TRIVY_TIMEOUT": "5m0s"
+	"env.SCANNER_TRIVY_TIMEOUT": "5m0s",
+	"env.SCANNER_TRIVY_VEX_SOURCE": ""
 }
 }`,
 		},
