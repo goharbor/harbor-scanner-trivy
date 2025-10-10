@@ -36,11 +36,9 @@ type ScanOption struct {
 }
 
 // RegistryAuth wraps registry credentials.
-type RegistryAuth interface {
-}
+type RegistryAuth interface{}
 
-type NoAuth struct {
-}
+type NoAuth struct{}
 
 type BasicAuth struct {
 	Username string
@@ -233,6 +231,23 @@ func (w *wrapper) prepareScanCmd(target ScanTarget, outputFile string, opt ScanO
 	cmd := exec.Command(name, args...)
 
 	cmd.Env = w.ambassador.Environ()
+
+	if w.config.CacheDir != "" {
+		cmd.Env = append(cmd.Env, fmt.Sprintf("XDG_CACHE_HOME=%s", w.config.CacheDir))
+	}
+
+	// Set TMPDIR to override the default /tmp location for Trivy's temporary files.
+	// Trivy downloads vulnerability databases to a temporary directory first before
+	// moving them to the cache directory. In containerized environments, /tmp may be:
+	// 1. A memory-backed tmpfs with limited space, causing out-of-space errors
+	// 2. Not properly configured with sufficient storage for large database downloads
+	// 3. Ephemeral and cleared on container restart, losing in-progress downloads
+	// By setting TMPDIR to a configured directory (default: /home/scanner/.cache/tmp),
+	// we ensure Trivy uses a location with adequate storage and proper persistence.
+	// See: https://github.com/aquasecurity/trivy/blob/main/pkg/oci/artifact.go
+	if w.config.TmpDir != "" {
+		cmd.Env = append(cmd.Env, fmt.Sprintf("TMPDIR=%s", w.config.TmpDir))
+	}
 
 	switch a := target.Auth().(type) {
 	case NoAuth:
