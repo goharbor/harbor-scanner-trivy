@@ -160,6 +160,7 @@ func TestGetConfig(t *testing.T) {
 				"SCANNER_TRIVY_OFFLINE_SCAN":    "true",
 				"SCANNER_TRIVY_GITHUB_TOKEN":    "<GITHUB_TOKEN>",
 				"SCANNER_TRIVY_TIMEOUT":         "15m30s",
+				"SCANNER_TRIVY_VEX_SOURCE":      "oci",
 
 				"SCANNER_STORE_REDIS_NAMESPACE":    "store.ns",
 				"SCANNER_STORE_REDIS_SCAN_JOB_TTL": "2h45m15s",
@@ -201,6 +202,7 @@ func TestGetConfig(t *testing.T) {
 					Insecure:         true,
 					GitHubToken:      "<GITHUB_TOKEN>",
 					Timeout:          parseDuration(t, "15m30s"),
+					VEXSource:        "oci",
 				},
 				RedisPool: RedisPool{
 					URL:               "redis://harbor-harbor-redis:6379",
