@@ -67,6 +67,7 @@ func TestGetConfig(t *testing.T) {
 				},
 				Trivy: Trivy{
 					DebugMode:   true,
+					TmpDir:      "/home/scanner/.cache/tmp",
 					CacheDir:    "/home/scanner/.cache/trivy",
 					ReportsDir:  "/home/scanner/.cache/reports",
 					VulnType:    "os,library",
@@ -107,6 +108,7 @@ func TestGetConfig(t *testing.T) {
 				},
 				Trivy: Trivy{
 					DebugMode:   false,
+					TmpDir:      "/home/scanner/.cache/tmp",
 					CacheDir:    "/home/scanner/.cache/trivy",
 					ReportsDir:  "/home/scanner/.cache/reports",
 					VulnType:    "os,library",
@@ -148,6 +150,7 @@ func TestGetConfig(t *testing.T) {
 				"SCANNER_API_SERVER_WRITE_TIMEOUT":   "2m",
 				"SCANNER_API_SERVER_IDLE_TIMEOUT":    "3m10s",
 
+				"SCANNER_TRIVY_TMP_DIR":         "/home/scanner/trivy-tmp",
 				"SCANNER_TRIVY_CACHE_DIR":       "/home/scanner/trivy-cache",
 				"SCANNER_TRIVY_REPORTS_DIR":     "/home/scanner/trivy-reports",
 				"SCANNER_TRIVY_DEBUG_MODE":      "true",
@@ -188,6 +191,7 @@ func TestGetConfig(t *testing.T) {
 					MetricsEnabled: false,
 				},
 				Trivy: Trivy{
+					TmpDir:           "/home/scanner/trivy-tmp",
 					CacheDir:         "/home/scanner/trivy-cache",
 					ReportsDir:       "/home/scanner/trivy-reports",
 					DebugMode:        true,

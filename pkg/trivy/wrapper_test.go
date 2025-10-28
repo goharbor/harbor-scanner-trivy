@@ -130,6 +130,7 @@ func TestWrapper_Scan(t *testing.T) {
 			Path: "/usr/local/bin/trivy",
 			Env: []string{
 				"HTTP_PROXY=http://someproxy:7777",
+				"XDG_CACHE_HOME=" + cacheDir,
 				"TRIVY_USERNAME=dave.loper",
 				"TRIVY_PASSWORD=s3cret",
 				"GITHUB_TOKEN=<github_token>",
@@ -221,6 +222,7 @@ func TestWrapper_Scan(t *testing.T) {
 			Path: "/usr/local/bin/trivy",
 			Env: []string{
 				"HTTP_PROXY=http://someproxy:7777",
+				"XDG_CACHE_HOME=" + cacheDir,
 			},
 			Args: []string{
 				"/usr/local/bin/trivy",

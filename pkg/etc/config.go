@@ -24,6 +24,15 @@ type Config struct {
 }
 
 type Trivy struct {
+	// TmpDir is the directory where Trivy stores temporary files during operations,
+	// particularly when downloading vulnerability databases. Trivy uses the system's
+	// TMPDIR (defaulting to /tmp) to initially download database files before moving
+	// them to CacheDir. In containerized environments, /tmp is often a memory-backed
+	// tmpfs with limited space, which can cause out-of-space errors when downloading
+	// large databases (e.g., trivy-db can be 100MB+). Setting this to a persistent
+	// directory with adequate storage prevents these failures.
+	// See: https://github.com/aquasecurity/trivy/blob/main/pkg/oci/artifact.go
+	TmpDir           string        `env:"SCANNER_TRIVY_TMP_DIR" envDefault:"/home/scanner/.cache/tmp"`
 	CacheDir         string        `env:"SCANNER_TRIVY_CACHE_DIR" envDefault:"/home/scanner/.cache/trivy"`
 	ReportsDir       string        `env:"SCANNER_TRIVY_REPORTS_DIR" envDefault:"/home/scanner/.cache/reports"`
 	DebugMode        bool          `env:"SCANNER_TRIVY_DEBUG_MODE" envDefault:"false"`
