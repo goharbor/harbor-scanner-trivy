@@ -70,6 +70,7 @@ func (t *transformer) transformVulnerabilities(source []trivy.Vulnerability) []h
 			ID:               v.VulnerabilityID,
 			Pkg:              v.PkgName,
 			Version:          v.InstalledVersion,
+			Status:           v.Status,
 			FixVersion:       v.FixedVersion,
 			Severity:         t.toHarborSeverity(v.Severity),
 			Description:      v.Description,

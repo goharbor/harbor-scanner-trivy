@@ -48,6 +48,7 @@ type Vulnerability struct {
 	VulnerabilityID  string              `json:"VulnerabilityID"`
 	PkgName          string              `json:"PkgName"`
 	InstalledVersion string              `json:"InstalledVersion"`
+	Status           string              `json:"Status"`
 	FixedVersion     string              `json:"FixedVersion"`
 	Title            string              `json:"Title"`
 	Description      string              `json:"Description"`

@@ -154,6 +154,7 @@ type VulnerabilityItem struct {
 	ID               string         `json:"id"`
 	Pkg              string         `json:"package"`
 	Version          string         `json:"version"`
+	Status           string         `json:"status,omitempty"`
 	FixVersion       string         `json:"fix_version,omitempty"`
 	Severity         Severity       `json:"severity"`
 	Description      string         `json:"description"`
