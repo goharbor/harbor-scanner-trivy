@@ -315,8 +315,9 @@ func (h *requestHandler) GetMetadata(res http.ResponseWriter, _ *http.Request) {
 		"env.SCANNER_TRIVY_VULN_TYPE":           h.config.Trivy.VulnType,
 		"env.SCANNER_TRIVY_SECURITY_CHECKS":     h.config.Trivy.Scanners,
 		"env.SCANNER_TRIVY_SEVERITY":            h.config.Trivy.Severity,
-		"env.SCANNER_TRIVY_TIMEOUT":             h.config.Trivy.Timeout.String(),
-		"env.SCANNER_TRIVY_VEX_SOURCE":          h.config.Trivy.VEXSource,
+		"env.SCANNER_TRIVY_TIMEOUT":              h.config.Trivy.Timeout.String(),
+		"env.SCANNER_TRIVY_VEX_SOURCE":           h.config.Trivy.VEXSource,
+		"env.SCANNER_TRIVY_SKIP_VEX_REPO_UPDATE": strconv.FormatBool(h.config.Trivy.SkipVEXRepoUpdate),
 	}
 
 	vi, err := h.wrapper.GetVersion()
