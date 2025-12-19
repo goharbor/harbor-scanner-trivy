@@ -150,6 +150,10 @@ scanner:
     #    # https://cwe.mitre.org/data/definitions/352.html
     #    input.CweIDs[_] == "CWE-352"
     #  }
+    ## VEXSource the VEX source for vulnerability filtering. Possible values are `oci` and `repo`.
+    VEXSource: ""
+    ## skipVEXRepoUpdate the flag to skip updating the VEX repository
+    skipVEXRepoUpdate: false
   store:
     ## redisNamespace the namespace for keys in the Redis store
     redisNamespace: "harbor.scanner.trivy:store"
