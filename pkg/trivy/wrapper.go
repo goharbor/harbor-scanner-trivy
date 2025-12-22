@@ -219,6 +219,14 @@ func (w *wrapper) prepareScanCmd(target ScanTarget, outputFile string, opt ScanO
 		args = append(args, "--insecure")
 	}
 
+	if w.config.VEXSource != "" {
+		args = append(args, "--vex", w.config.VEXSource)
+	}
+
+	if w.config.SkipVEXRepoUpdate {
+		args = append(args, "--skip-vex-repo-update")
+	}
+
 	targetName, err := target.Name()
 	if err != nil {
 		return nil, xerrors.Errorf("get target name: %w", err)

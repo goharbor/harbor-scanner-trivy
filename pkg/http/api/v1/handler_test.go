@@ -710,15 +710,17 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 			},
 			config: etc.Config{
 				Trivy: etc.Trivy{
-					SkipDBUpdate:     false,
-					SkipJavaDBUpdate: false,
-					IgnoreUnfixed:    true,
-					DebugMode:        true,
-					Insecure:         true,
-					VulnType:         "os,library",
-					Scanners:         "vuln",
-					Severity:         "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
-					Timeout:          5 * time.Minute,
+					SkipDBUpdate:      false,
+					SkipJavaDBUpdate:  false,
+					IgnoreUnfixed:     true,
+					DebugMode:         true,
+					Insecure:          true,
+					VulnType:          "os,library",
+					Scanners:          "vuln",
+					Severity:          "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
+					Timeout:           5 * time.Minute,
+					VEXSource:         "oci",
+					SkipVEXRepoUpdate: true,
 				},
 			},
 			expectedHTTPCode: http.StatusOK,
@@ -773,7 +775,9 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 	"env.SCANNER_TRIVY_VULN_TYPE": "os,library",
 	"env.SCANNER_TRIVY_SECURITY_CHECKS": "vuln",
 	"env.SCANNER_TRIVY_SEVERITY": "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
-	"env.SCANNER_TRIVY_TIMEOUT": "5m0s"
+	"env.SCANNER_TRIVY_TIMEOUT": "5m0s",
+	"env.SCANNER_TRIVY_VEX_SOURCE": "oci",
+	"env.SCANNER_TRIVY_SKIP_VEX_REPO_UPDATE": "true"
 }
 }`,
 		},
@@ -798,6 +802,7 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 					Scanners:         "vuln",
 					Severity:         "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
 					Timeout:          5 * time.Minute,
+					VEXSource:        "repo",
 				},
 			},
 			expectedHTTPCode: http.StatusOK,
@@ -850,7 +855,9 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 	"env.SCANNER_TRIVY_VULN_TYPE": "os,library",
 	"env.SCANNER_TRIVY_SECURITY_CHECKS": "vuln",
 	"env.SCANNER_TRIVY_SEVERITY": "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
-	"env.SCANNER_TRIVY_TIMEOUT": "5m0s"
+	"env.SCANNER_TRIVY_TIMEOUT": "5m0s",
+	"env.SCANNER_TRIVY_VEX_SOURCE": "repo",
+	"env.SCANNER_TRIVY_SKIP_VEX_REPO_UPDATE": "false"
 }
 }`,
 		},
@@ -921,7 +928,9 @@ func TestRequestHandler_GetMetadata(t *testing.T) {
 	"env.SCANNER_TRIVY_VULN_TYPE": "os,library",
 	"env.SCANNER_TRIVY_SECURITY_CHECKS": "vuln",
 	"env.SCANNER_TRIVY_SEVERITY": "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
-	"env.SCANNER_TRIVY_TIMEOUT": "5m0s"
+	"env.SCANNER_TRIVY_TIMEOUT": "5m0s",
+	"env.SCANNER_TRIVY_VEX_SOURCE": "",
+	"env.SCANNER_TRIVY_SKIP_VEX_REPO_UPDATE": "false"
 }
 }`,
 		},
