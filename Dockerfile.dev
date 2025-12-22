@@ -1,8 +1,8 @@
 # That's the only place where you're supposed to specify version of Trivy.
-ARG TRIVY_VERSION=0.67.2
+ARG TRIVY_VERSION=0.68.2
 ARG SKAFFOLD_GO_GCFLAGS
 
-FROM golang:1.24 AS builder
+FROM golang:1.25 AS builder
 
 WORKDIR /go/src/github.com/aquasecurity/harbor-scanner-trivy
 
