@@ -417,7 +417,9 @@ func TestRestAPI(t *testing.T) {
 	"env.SCANNER_TRIVY_VULN_TYPE": "os",
 	"env.SCANNER_TRIVY_SEVERITY": "LOW,MEDIUM,HIGH,CRITICAL",
 	"env.SCANNER_TRIVY_SECURITY_CHECKS": "vuln",
-	"env.SCANNER_TRIVY_TIMEOUT": "5m0s"
+	"env.SCANNER_TRIVY_TIMEOUT": "5m0s",
+	"env.SCANNER_TRIVY_VEX_SOURCE": "",
+	"env.SCANNER_TRIVY_SKIP_VEX_REPO_UPDATE": "false"
 	}
 }`,
 			now.UTC().Format(time.RFC3339)),

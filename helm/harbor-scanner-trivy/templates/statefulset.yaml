@@ -121,6 +121,10 @@ spec:
               value: "/certs/tls.crt"
             - name: "SCANNER_API_SERVER_TLS_KEY"
               value: "/certs/tls.key"
+            - name: "SCANNER_TRIVY_VEX_SOURCE"
+              value: {{ .Values.scanner.trivy.VEXSource | default "" | quote }}
+            - name: "SCANNER_TRIVY_SKIP_VEX_REPO_UPDATE"
+              value: {{ .Values.scanner.trivy.skipVEXRepoUpdate | default false | quote }}
             {{- end }}
           ports:
             - name: api-server

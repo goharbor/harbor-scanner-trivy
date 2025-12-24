@@ -38,8 +38,10 @@ type Trivy struct {
 	JavaDBRepository string        `env:"SCANNER_TRIVY_JAVA_DB_REPOSITORY"`
 	OfflineScan      bool          `env:"SCANNER_TRIVY_OFFLINE_SCAN" envDefault:"false"`
 	GitHubToken      string        `env:"SCANNER_TRIVY_GITHUB_TOKEN"`
-	Insecure         bool          `env:"SCANNER_TRIVY_INSECURE" envDefault:"false"`
-	Timeout          time.Duration `env:"SCANNER_TRIVY_TIMEOUT" envDefault:"5m0s"`
+	Insecure            bool          `env:"SCANNER_TRIVY_INSECURE" envDefault:"false"`
+	VEXSource           string        `env:"SCANNER_TRIVY_VEX_SOURCE"`
+	SkipVEXRepoUpdate   bool          `env:"SCANNER_TRIVY_SKIP_VEX_REPO_UPDATE" envDefault:"false"`
+	Timeout             time.Duration `env:"SCANNER_TRIVY_TIMEOUT" envDefault:"5m0s"`
 }
 
 type API struct {
