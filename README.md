@@ -32,7 +32,10 @@ The following matrix indicates the version of Trivy and Trivy adapter installed 
 
 | Harbor                  | Trivy Adapter | Trivy           |
 |-------------------------|---------------|-----------------|
+| harbor v2.14.2          | v0.34.2       | [trivy v0.68.2] |
+| harbor v2.14.1          | v0.34.0       | [trivy v0.66.0] |
 | harbor v2.14.0          | v0.34.0       | [trivy v0.66.0] |
+| harbor v2.13.4          | v0.34.2       | [trivy v0.68.2] |
 | harbor v2.13.2          | v0.33.2       | [trivy v0.64.1] |
 | harbor v2.13.1          | v0.33.1       | [trivy v0.62.1] |
 | harbor v2.13.0          | v0.33.0-rc.2  | [trivy v0.61.0] |
@@ -40,9 +43,6 @@ The following matrix indicates the version of Trivy and Trivy adapter installed 
 | harbor v2.12.2          | v0.32.3       | [trivy v0.58.2] |
 | harbor v2.12.1          | v0.32.2       | [trivy v0.57.1] |
 | harbor v2.12.0          | v0.32.0       | [trivy v0.56.1] |
-| harbor v2.11.1          | v0.31.4       | [trivy v0.54.1] |
-| -                       | v0.31.3       | [trivy v0.52.2] |
-| harbor v2.11.0          | v0.31.2       | [trivy v0.51.2] |
 
 Note: The version matrix is not exhaustive. For older versions please refer to https://github.com/aquasecurity/harbor-scanner-trivy 
 
