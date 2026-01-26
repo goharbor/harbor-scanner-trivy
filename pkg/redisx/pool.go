@@ -70,6 +70,7 @@ func newSentinelPool(configURL *url.URL, config etc.RedisPool) (*redis.Client, e
 		SentinelAddrs: sentinelURL.Addrs,
 		DB:            sentinelURL.Database,
 		Password:      sentinelURL.Password,
+		Username:      sentinelURL.Username,
 
 		DialTimeout:  config.ConnectionTimeout,
 		ReadTimeout:  config.ReadTimeout,
@@ -88,6 +89,7 @@ func newSentinelPool(configURL *url.URL, config etc.RedisPool) (*redis.Client, e
 
 type SentinelURL struct {
 	Password    string
+	Username    string
 	Addrs       []string
 	MonitorName string
 	Database    int
@@ -110,6 +112,7 @@ func ParseSentinelURL(configURL *url.URL) (sentinelURL SentinelURL, err error) {
 	}
 
 	if user := configURL.User; user != nil {
+		sentinelURL.Username = user.Username()
 		if password, set := user.Password(); set {
 			sentinelURL.Password = password
 		}
