@@ -71,6 +71,7 @@ func (t *transformer) transformVulnerabilities(source []trivy.Vulnerability) []h
 			Pkg:              v.PkgName,
 			Version:          v.InstalledVersion,
 			Status:           v.Status,
+			PURL:             t.toPURL(v.PkgIdentifier),
 			FixVersion:       v.FixedVersion,
 			Severity:         t.toHarborSeverity(v.Severity),
 			Description:      v.Description,
@@ -109,6 +110,13 @@ func (t *transformer) toHarborLayer(tLayer *trivy.Layer) (hLayer *harbor.Layer) 
 		DiffID: tLayer.DiffID,
 	}
 	return
+}
+
+func (t *transformer) toPURL(pkgIdentifier *trivy.PkgIdentifier) string {
+	if pkgIdentifier == nil {
+		return ""
+	}
+	return pkgIdentifier.PURL
 }
 
 func (t *transformer) toHarborSeverity(severity string) harbor.Severity {
