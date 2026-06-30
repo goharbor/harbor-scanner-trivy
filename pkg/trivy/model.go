@@ -32,6 +32,10 @@ type Layer struct {
 	DiffID string `json:"DiffID"`
 }
 
+type PkgIdentifier struct {
+	PURL string `json:"PURL"`
+}
+
 type CVSSInfo struct {
 	V2Vector string   `json:"V2Vector,omitempty"`
 	V3Vector string   `json:"V3Vector,omitempty"`
@@ -47,6 +51,7 @@ type Report struct {
 type Vulnerability struct {
 	VulnerabilityID  string              `json:"VulnerabilityID"`
 	PkgName          string              `json:"PkgName"`
+	PkgIdentifier    *PkgIdentifier      `json:"PkgIdentifier"`
 	InstalledVersion string              `json:"InstalledVersion"`
 	Status           string              `json:"Status"`
 	FixedVersion     string              `json:"FixedVersion"`
