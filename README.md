@@ -32,8 +32,7 @@ The following matrix indicates the version of Trivy and Trivy adapter installed 
 
 | Harbor                   | Trivy Adapter | Trivy           |
 |--------------------------|---------------|-----------------|
-| harbor v2.17.0           | v0.38.0       | [trivy v0.72.0] |
-| harbor v2.16.0           | v0.37.1       | [trivy v0.71.1] |
+| harbor v2.16.0           | v0.38.0       | [trivy v0.72.0] |
 | harbor v2.15.1           | v0.36.0       | [trivy v0.70.0] |
 | harbor v2.15.0           | v0.35.1       | [trivy v0.69.3] |
 | harbor v2.14.2           | v0.34.2       | [trivy v0.68.2] |
@@ -48,7 +47,7 @@ The following matrix indicates the version of Trivy and Trivy adapter installed 
 | harbor v2.12.1           | v0.32.2       | [trivy v0.57.1] |
 | harbor v2.12.0           | v0.32.0       | [trivy v0.56.1] |
 
-Note: The version matrix is not exhaustive. For older versions please refer to https://github.com/aquasecurity/harbor-scanner-trivy 
+Note: The version matrix is not exhaustive. For older versions please refer to https://github.com/aquasecurity/harbor-scanner-trivy
 
 ## Deployment
 
@@ -160,7 +159,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 requests.
 
 ---
-Harbor Scanner Adapter for Trivy is an [Aqua Security](https://aquasec.com) open source project.  
+Harbor Scanner Adapter for Trivy is an [Aqua Security](https://aquasec.com) open source project.
 Learn about our open source work and portfolio [here](https://www.aquasec.com/products/open-source-projects/).
 
 [release-img]: https://img.shields.io/github/release/goharbor/harbor-scanner-trivy.svg?logo=github
