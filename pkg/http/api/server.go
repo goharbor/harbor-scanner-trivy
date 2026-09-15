@@ -37,16 +37,14 @@ func NewServer(config etc.API, handler http.Handler) (server *Server, err error)
 			// The API server prefers elliptic curves which have assembly implementations
 			// to ensure performance under heavy loads.
 			CurvePreferences: []tls.CurveID{
-				tls.X25519,
 				tls.CurveP256,
+				tls.CurveP384,
 			},
 			// The API server only supports cipher suites which use ECDHE (forward secrecy)
 			// and does not support weak cipher suites that use RC4, 3DES or CBC.
 			CipherSuites: []uint16{
 				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
 				tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-				tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
-				tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
 				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
 				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
 			},
