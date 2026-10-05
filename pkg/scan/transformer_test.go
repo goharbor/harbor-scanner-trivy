@@ -43,6 +43,9 @@ func TestTransformer_Transform(t *testing.T) {
 				{
 					VulnerabilityID:  "CVE-0000-0001",
 					PkgName:          "PKG-01",
+					PkgIdentifier: &trivy.PkgIdentifier{
+						PURL: "pkg:deb/debian/pkg-01@1.0.0?arch=amd64&distro=debian-12",
+					},
 					InstalledVersion: "PKG-01-VER",
 					FixedVersion:     "PKG-01-FIX-VER",
 					Status:           "fixed",
@@ -149,6 +152,7 @@ func TestTransformer_Transform(t *testing.T) {
 				Pkg:         "PKG-01",
 				Version:     "PKG-01-VER",
 				Status:      "fixed",
+				PURL:        "pkg:deb/debian/pkg-01@1.0.0?arch=amd64&distro=debian-12",
 				FixVersion:  "PKG-01-FIX-VER",
 				Severity:    harbor.SevCritical,
 				Description: "CVE-0000-0001.DESC",
