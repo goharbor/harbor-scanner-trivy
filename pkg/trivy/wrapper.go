@@ -143,13 +143,21 @@ func (w *wrapper) parseJSONReport(reportFile io.Reader) (Report, error) {
 	}
 
 	var vulnerabilities []Vulnerability
+	var secrets []SecretFinding
 	for _, scanResult := range scanReport.Results {
 		slog.Debug("Parsing vulnerabilities", slog.String("target", scanResult.Target))
 		vulnerabilities = append(vulnerabilities, scanResult.Vulnerabilities...)
+
+		// Trivy only fills Secrets when secret detection is enabled via
+		// SCANNER_TRIVY_SECURITY_CHECKS, and reports the file path on the result.
+		for _, secret := range scanResult.Secrets {
+			secrets = append(secrets, SecretFinding{Secret: secret, Target: scanResult.Target})
+		}
 	}
 
 	return Report{
 		Vulnerabilities: vulnerabilities,
+		Secrets:         secrets,
 	}, nil
 }
 

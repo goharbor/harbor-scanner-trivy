@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -298,4 +299,91 @@ func tmpDirs(t *testing.T) (string, string) {
 	require.NoError(t, os.MkdirAll(reportsDir, 0700))
 
 	return cacheDir, reportsDir
+}
+
+func TestWrapper_parseJSONReportSecrets(t *testing.T) {
+	// Verbatim output of `trivy image --scanners secret --format json` (trivy 0.76.0)
+	// against an alpine image carrying a .env file. Note that Trivy redacts the secret
+	// only on the matching line: Code.Lines holds the neighbouring lines of the file
+	// unredacted, which is why Code is not modelled and never reaches Harbor.
+	const reportJSON = `{
+  "SchemaVersion": 2,
+  "Results": [
+    {
+      "Target": "harbor-secret-fixture:test (alpine 3.19.9)",
+      "Class": "os-pkgs",
+      "Type": "alpine"
+    },
+    {
+      "Target": "/app/config/.env",
+      "Class": "secret",
+      "Secrets": [
+        {
+          "RuleID": "github-pat",
+          "Category": "GitHub",
+          "Severity": "CRITICAL",
+          "Title": "GitHub Personal Access Token",
+          "StartLine": 5,
+          "EndLine": 5,
+          "Code": {
+            "Lines": [
+              {
+                "Number": 3,
+                "Content": "AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE",
+                "IsCause": false,
+                "Highlighted": "AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE"
+              },
+              {
+                "Number": 5,
+                "Content": "GITHUB_TOKEN=****************************************",
+                "IsCause": true,
+                "Highlighted": "GITHUB_TOKEN=****************************************"
+              }
+            ]
+          },
+          "Match": "GITHUB_TOKEN=****************************************",
+          "Layer": {
+            "DiffID": "sha256:257195039a073ae7075f40162dec324d8fbfff2a4ba079dbb98479a5dca216f1",
+            "CreatedBy": "COPY .env /app/config/.env # buildkit"
+          },
+          "Offset": 199
+        }
+      ]
+    }
+  ]
+}`
+
+	got, err := (&wrapper{}).parseJSONReport(strings.NewReader(reportJSON))
+	require.NoError(t, err)
+
+	require.Equal(t, []SecretFinding{
+		{
+			Target: "/app/config/.env",
+			Secret: Secret{
+				RuleID:    "github-pat",
+				Category:  "GitHub",
+				Severity:  "CRITICAL",
+				Title:     "GitHub Personal Access Token",
+				StartLine: 5,
+				EndLine:   5,
+				Match:     "GITHUB_TOKEN=****************************************",
+				// Trivy reports no Digest for a secret's layer, only DiffID
+				Layer: &Layer{
+					DiffID: "sha256:257195039a073ae7075f40162dec324d8fbfff2a4ba079dbb98479a5dca216f1",
+				},
+			},
+		},
+	}, got.Secrets)
+
+	// Guard the reason Code is not modelled: the unredacted neighbouring line that Trivy
+	// puts in Code.Lines must not survive decoding, or it would travel on to Harbor.
+	decoded, err := json.Marshal(got.Secrets)
+	require.NoError(t, err)
+	require.NotContains(t, string(decoded), "AKIAIOSFODNN7EXAMPLE")
+}
+
+func TestWrapper_parseJSONReportWithoutSecrets(t *testing.T) {
+	got, err := (&wrapper{}).parseJSONReport(strings.NewReader(expectedReportJSON))
+	require.NoError(t, err)
+	require.Nil(t, got.Secrets)
 }

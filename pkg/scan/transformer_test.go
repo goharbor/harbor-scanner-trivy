@@ -1,12 +1,14 @@
 package scan
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/aquasecurity/harbor-scanner-trivy/pkg/harbor"
 	"github.com/aquasecurity/harbor-scanner-trivy/pkg/trivy"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type fixedClock struct {
@@ -243,4 +245,84 @@ func TestTransformer_Transform(t *testing.T) {
 			},
 		},
 	}, hr)
+}
+
+func TestTransformer_TransformSecrets(t *testing.T) {
+	fixedTime := time.Now()
+	tf := NewTransformer(&fixedClock{fixedTime: fixedTime})
+
+	hr := tf.Transform("",
+		harbor.ScanRequest{
+			Capabilities: []harbor.Capability{{Type: harbor.CapabilityTypeVulnerability}},
+			Artifact: harbor.Artifact{
+				Repository: "library/mongo",
+				Digest:     "sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b",
+			},
+		},
+		trivy.Report{
+			Vulnerabilities: []trivy.Vulnerability{
+				{VulnerabilityID: "CVE-2020-1234", PkgName: "openssl", Severity: "MEDIUM"},
+			},
+			Secrets: []trivy.SecretFinding{
+				{
+					Target: "app/config/.env",
+					Secret: trivy.Secret{
+						RuleID:    "github-pat",
+						Category:  "GitHub",
+						Severity:  "CRITICAL",
+						Title:     "GitHub Personal Access Token",
+						StartLine: 12,
+						EndLine:   12,
+						Match:     "GITHUB_TOKEN=****",
+						Layer: &trivy.Layer{
+							Digest: "sha256:3b00a364fb74246ca119d16111eb62f7302b2ff66d51e373c2bb209f8a1f3b9e",
+							DiffID: "sha256:3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b6c3c624b58dbbcd3",
+						},
+					},
+				},
+			},
+		})
+
+	assert.Equal(t, []harbor.SecretItem{
+		{
+			Target:    "app/config/.env",
+			RuleID:    "github-pat",
+			Category:  "GitHub",
+			Severity:  harbor.SevCritical,
+			Title:     "GitHub Personal Access Token",
+			StartLine: 12,
+			EndLine:   12,
+			Match:     "GITHUB_TOKEN=****",
+			Layer: &harbor.Layer{
+				Digest: "sha256:3b00a364fb74246ca119d16111eb62f7302b2ff66d51e373c2bb209f8a1f3b9e",
+				DiffID: "sha256:3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b6c3c624b58dbbcd3",
+			},
+		},
+	}, hr.Secrets)
+
+	// a critical secret must not raise the report severity, which gates deployments
+	assert.Equal(t, harbor.SevMedium, hr.Severity)
+}
+
+func TestTransformer_TransformNoSecrets(t *testing.T) {
+	fixedTime := time.Now()
+	tf := NewTransformer(&fixedClock{fixedTime: fixedTime})
+
+	hr := tf.Transform("",
+		harbor.ScanRequest{
+			Capabilities: []harbor.Capability{{Type: harbor.CapabilityTypeVulnerability}},
+			Artifact:     harbor.Artifact{Repository: "library/mongo", Digest: "sha256:6c3c62"},
+		},
+		trivy.Report{
+			Vulnerabilities: []trivy.Vulnerability{
+				{VulnerabilityID: "CVE-2020-1234", PkgName: "openssl", Severity: "MEDIUM"},
+			},
+		})
+
+	assert.Nil(t, hr.Secrets)
+
+	// the field must stay out of the wire format for scanners without secret detection
+	data, err := json.Marshal(hr)
+	require.NoError(t, err)
+	assert.NotContains(t, string(data), "secrets")
 }
