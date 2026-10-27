@@ -135,6 +135,26 @@ type ScanReport struct {
 
 	// For vulnerabilities
 	Vulnerabilities []VulnerabilityItem `json:"vulnerabilities,omitempty"`
+
+	// Secrets found in the filesystem of the artifact, reported alongside the
+	// vulnerabilities when secret detection is enabled.
+	Secrets []SecretItem `json:"secrets,omitempty"`
+}
+
+// SecretItem is a secret the scanner matched in a file of the scanned artifact.
+type SecretItem struct {
+	// Target is the path of the file holding the secret inside the image filesystem,
+	// e.g. /app/config/.env
+	Target    string   `json:"target"`
+	RuleID    string   `json:"rule_id"`
+	Category  string   `json:"category"`
+	Severity  Severity `json:"severity"`
+	Title     string   `json:"title"`
+	StartLine int      `json:"start_line"`
+	EndLine   int      `json:"end_line"`
+	// Match is the matched line with the secret value redacted by Trivy.
+	Match string `json:"match"`
+	Layer *Layer `json:"layer,omitempty"`
 }
 
 type Layer struct {

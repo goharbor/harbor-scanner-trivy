@@ -54,6 +54,9 @@ func (t *transformer) Transform(mediaType api.MediaType, req harbor.ScanRequest,
 		report.SBOM = source.SBOM
 	default:
 		report.Vulnerabilities = t.transformVulnerabilities(source.Vulnerabilities)
+		report.Secrets = t.transformSecrets(source.Secrets)
+		// Secrets are deliberately left out of the report severity: that severity gates
+		// deployment of vulnerable artifacts in Harbor, and secrets are summarized apart.
 		report.Severity = t.toHighestSeverity(report.Vulnerabilities)
 	}
 
@@ -78,6 +81,26 @@ func (t *transformer) transformVulnerabilities(source []trivy.Vulnerability) []h
 			Layer:            t.toHarborLayer(v.Layer),
 			CweIDs:           v.CweIDs,
 			VendorAttributes: t.toVendorAttributes(v.CVSS),
+		}
+	})
+}
+
+func (t *transformer) transformSecrets(source []trivy.SecretFinding) []harbor.SecretItem {
+	if len(source) == 0 {
+		return nil
+	}
+
+	return lo.Map(source, func(s trivy.SecretFinding, _ int) harbor.SecretItem {
+		return harbor.SecretItem{
+			Target:    s.Target,
+			RuleID:    s.RuleID,
+			Category:  s.Category,
+			Severity:  t.toHarborSeverity(s.Severity),
+			Title:     s.Title,
+			StartLine: s.StartLine,
+			EndLine:   s.EndLine,
+			Match:     s.Match,
+			Layer:     t.toHarborLayer(s.Layer),
 		}
 	})
 }

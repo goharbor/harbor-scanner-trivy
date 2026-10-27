@@ -12,8 +12,12 @@ type ScanReport struct {
 }
 
 type ScanResult struct {
-	Target          string          `json:"Target"`
+	Target string `json:"Target"`
+	// Class tells apart the kinds of result Trivy groups under one target,
+	// e.g. os-pkgs, lang-pkgs or secret.
+	Class           string          `json:"Class"`
 	Vulnerabilities []Vulnerability `json:"Vulnerabilities"`
+	Secrets         []Secret        `json:"Secrets"`
 }
 
 type Metadata struct {
@@ -42,6 +46,35 @@ type CVSSInfo struct {
 type Report struct {
 	SBOM            any
 	Vulnerabilities []Vulnerability
+	Secrets         []SecretFinding
+}
+
+// Secret is a secret Trivy matched in a file of the scanned image.
+//
+// Trivy also reports a Code block holding the lines surrounding the match, which is
+// deliberately not modelled here: Trivy redacts the secret only on the matching line,
+// so Code.Lines carries the neighbouring file content verbatim and can expose further
+// credentials. Only Match, which is redacted, is forwarded to Harbor.
+type Secret struct {
+	RuleID    string `json:"RuleID"`
+	Category  string `json:"Category"`
+	Severity  string `json:"Severity"`
+	Title     string `json:"Title"`
+	StartLine int    `json:"StartLine"`
+	EndLine   int    `json:"EndLine"`
+	// Match is the matching line with the secret value replaced by asterisks.
+	Match string `json:"Match"`
+	// Layer is the layer that introduced the secret. For secrets Trivy fills DiffID and
+	// CreatedBy but not Digest, so the digest reaching Harbor is empty.
+	Layer *Layer `json:"Layer"`
+}
+
+// SecretFinding pairs a Secret with the file it was found in. Trivy reports that path
+// once on the enclosing ScanResult rather than on each secret, as an absolute path
+// inside the image filesystem, e.g. /app/config/.env
+type SecretFinding struct {
+	Secret
+	Target string
 }
 
 type Vulnerability struct {
