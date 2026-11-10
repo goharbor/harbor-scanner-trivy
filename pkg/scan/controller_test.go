@@ -226,6 +226,20 @@ func TestController_ToRegistryAuth(t *testing.T) {
 			},
 		},
 		{
+			Name:          "Basic auth with a colon in the password",
+			Authorization: "Basic aGFyYm9yOnMzOmNyOmV0", // harbor:s3:cr:et
+			ExpectedAuth: trivy.BasicAuth{
+				Username: "harbor",
+				Password: "s3:cr:et",
+			},
+		},
+		{
+			Name:          "Basic auth without a separator",
+			Authorization: "Basic aGFyYm9ybm9jb2xvbg==", // harbornocolon
+			ExpectedAuth:  nil,
+			ExpectedError: "parsing basic auth credentials: expected <username>:<password>",
+		},
+		{
 			Name:          "Bearer auth",
 			Authorization: "Bearer someToken",
 			ExpectedAuth: trivy.BearerAuth{

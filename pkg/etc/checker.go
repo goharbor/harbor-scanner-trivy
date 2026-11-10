@@ -75,7 +75,7 @@ func ensureDirExists(path, description string) error {
 // try using it to prevent further errors.
 func dirExists(name string) bool {
 	info, err := os.Stat(name)
-	if os.IsNotExist(err) {
+	if err != nil {
 		return false
 	}
 	return info.IsDir()
@@ -85,7 +85,7 @@ func dirExists(name string) bool {
 // try using it to prevent further errors.
 func fileExists(name string) bool {
 	info, err := os.Stat(name)
-	if os.IsNotExist(err) {
+	if err != nil {
 		return false
 	}
 	return !info.IsDir()

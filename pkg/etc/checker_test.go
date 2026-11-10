@@ -71,6 +71,44 @@ func TestCheck(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
+	t.Run("Should return error when a dir cannot be stat'ed", func(t *testing.T) {
+		tempDir := t.TempDir()
+
+		// A path under a regular file makes os.Stat fail with ENOTDIR rather than
+		// ErrNotExist, so it returns a nil FileInfo alongside the error.
+		regularFile := path.Join(tempDir, "not-a-dir")
+		require.NoError(t, os.WriteFile(regularFile, []byte("x"), 0600))
+
+		err := Check(Config{Trivy: Trivy{
+			CacheDir:   path.Join(regularFile, "cache"),
+			ReportsDir: path.Join(tempDir, "reports"),
+		}})
+
+		assert.Error(t, err)
+	})
+
+	t.Run("Should return error when a TLS file cannot be stat'ed", func(t *testing.T) {
+		tempDir := t.TempDir()
+
+		regularFile := path.Join(tempDir, "not-a-dir")
+		require.NoError(t, os.WriteFile(regularFile, []byte("x"), 0600))
+
+		certFile := path.Join(regularFile, "tls.crt")
+
+		err := Check(Config{
+			API: API{
+				TLSCertificate: certFile,
+				TLSKey:         path.Join(regularFile, "tls.key"),
+			},
+			Trivy: Trivy{
+				CacheDir:   path.Join(tempDir, "cache"),
+				ReportsDir: path.Join(tempDir, "reports"),
+			},
+		})
+
+		assert.EqualError(t, err, fmt.Sprintf("TLS certificate file does not exist: %s", certFile))
+	})
+
 	t.Run("Should return error when TLS certificate does not exist", func(t *testing.T) {
 		tempDir := t.TempDir()
 
