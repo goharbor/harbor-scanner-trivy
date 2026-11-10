@@ -117,10 +117,15 @@ func (c *controller) decodeBasicAuth(value string) (auth trivy.RegistryAuth, err
 	if err != nil {
 		return auth, err
 	}
-	tokens := strings.Split(string(creds), ":")
+	// RFC 7617: the first colon separates the two fields and the password may
+	// contain further colons, so the split has to stop after the first one.
+	username, password, found := strings.Cut(string(creds), ":")
+	if !found {
+		return auth, xerrors.Errorf("parsing basic auth credentials: expected <username>:<password>")
+	}
 	auth = trivy.BasicAuth{
-		Username: tokens[0],
-		Password: tokens[1],
+		Username: username,
+		Password: password,
 	}
 	return
 }

@@ -93,10 +93,10 @@ func (s *store) UpdateStatus(ctx context.Context, scanJobKey job.ScanJobKey, new
 	logger.Debug("Updating status for scan job", slog.String("new_status", newStatus.String()))
 
 	scanJob, err := s.Get(ctx, scanJobKey)
-	if scanJob == nil {
-		return xerrors.Errorf("scan job (%s) not found", scanJobKey)
-	} else if err != nil {
+	if err != nil {
 		return err
+	} else if scanJob == nil {
+		return xerrors.Errorf("scan job (%s) not found", scanJobKey)
 	}
 
 	scanJob.Status = newStatus
@@ -114,6 +114,8 @@ func (s *store) UpdateReport(ctx context.Context, scanJobKey job.ScanJobKey, rep
 	scanJob, err := s.Get(ctx, scanJobKey)
 	if err != nil {
 		return err
+	} else if scanJob == nil {
+		return xerrors.Errorf("scan job (%s) not found", scanJobKey)
 	}
 
 	scanJob.Report = report
